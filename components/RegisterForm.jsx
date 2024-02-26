@@ -11,7 +11,8 @@ const RegisterForm = () => {
         </h1>
 
         <form className='flex flex-col gap-3'>
-          <input className='inputLogin' type='text' placeholder='Full Name' />
+          <input className='inputLogin' type='text' placeholder='First Name' />
+          <input className='inputLogin' type='text' placeholder='Last Name' />
           <input className='inputLogin' type='text' placeholder='Email' />
           <input
             className='inputLogin'

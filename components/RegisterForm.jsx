@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const RegisterForm = () => {
   const [fName, setFName] = useState('');
@@ -8,6 +9,8 @@ const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  const router = useRouter();
 
   const fNameHandler = (e) => {
     setFName(e.target.value);
@@ -34,6 +37,21 @@ const RegisterForm = () => {
     }
 
     try {
+      const resUserExists = await fetch('api/userExists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const { user } = await resUserExists.json();
+
+      if (user) {
+        setErrorMsg('User already exists.');
+        return;
+      }
+
       const res = await fetch('api/register', {
         method: 'POST',
         headers: {
@@ -50,6 +68,7 @@ const RegisterForm = () => {
       if (res.ok) {
         const form = e.target;
         form.reset();
+        router.push('/');
       } else {
         console.log('User registration failed: ', error);
       }
@@ -98,7 +117,7 @@ const RegisterForm = () => {
 
           {errorMsg && (
             <div className='bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2'>
-              {error}
+              {errorMsg}
             </div>
           )}
 

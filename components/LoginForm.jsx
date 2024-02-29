@@ -1,6 +1,47 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const router = useRouter();
+
+  const emailHandler = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const passwordHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await signIn('credentials', {
+        email,
+        password,
+        // TODO: Put isAdmin later
+        redirect: false,
+      });
+
+      if (res.error) {
+        setErrorMsg('Invalid Credentials');
+        return;
+      }
+
+      router.replace('/dashboard');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className='grid place-items-center h-screen'>
       <div className='shadow-lg p-5 rounded-lg border-t-4 border-green-800'>
@@ -10,9 +51,15 @@ const LoginForm = () => {
           Login
         </h1>
 
-        <form className='flex flex-col gap-3'>
-          <input className='inputLogin' type='text' placeholder='Email' />
+        <form onSubmit={submitHandler} className='flex flex-col gap-3'>
           <input
+            onChange={emailHandler}
+            className='inputLogin'
+            type='text'
+            placeholder='Email'
+          />
+          <input
+            onChange={passwordHandler}
             className='inputLogin'
             type='password'
             placeholder='Password'
@@ -21,9 +68,11 @@ const LoginForm = () => {
             Login
           </button>
 
-          <div className='bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2'>
-            Error message
-          </div>
+          {errorMsg && (
+            <div className='bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2'>
+              {errorMsg}
+            </div>
+          )}
 
           <Link className='text-sm mt-3 text-right' href={'/register'}>
             Don't have an account? <span className='underline'>Register</span>

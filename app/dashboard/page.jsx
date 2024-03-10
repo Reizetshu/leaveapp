@@ -1,7 +1,13 @@
-import UserInfo from '@/components/UserInfo';
+import UserDashboard from '@/components/UserDashboard';
 
 const Dashboard = () => {
-  return <UserInfo />;
+  return (
+    <>
+      <div>
+        <UserDashboard />
+      </div>
+    </>
+  );
 };
 
 export default Dashboard;

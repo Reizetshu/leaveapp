@@ -10,6 +10,8 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
+  const isAdmin = false;
+
   const router = useRouter();
 
   const fNameHandler = (e) => {
@@ -62,6 +64,7 @@ const RegisterForm = () => {
           lName,
           email,
           password,
+          isAdmin,
         }),
       });
 

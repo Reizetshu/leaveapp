@@ -11,15 +11,22 @@ const SideBar = () => {
 
   return (
     <div className='grid place-items-start h-screen'>
-      <div className=' h-screen px-4 bg-zinc-300/10 flex flex-col gap-2 my-6 rounded'>
+      <div className=' h-screen px-4 bg-zinc-300/10 flex flex-col gap-2 mb-6 rounded'>
         <div>
           Email: <span className='font-bold'>{session?.user?.email}</span>
         </div>
         <div>
           Type: <span className='font-bold'>User</span>
         </div>
-        <Link href={'/dashboard'}>Dashboard</Link>
-        <Link href={'/dashboard/leaverequest'}>Leave Request</Link>
+        <Link className='font-bold hover:underline' href={'/dashboard'}>
+          Dashboard
+        </Link>
+        <Link
+          className='font-bold hover:underline'
+          href={'/dashboard/leaverequest'}
+        >
+          Leave Request
+        </Link>
 
         <button
           onClick={logOutHandler}
